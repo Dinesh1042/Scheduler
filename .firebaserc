@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "scheduler-59144"
+  },
+  "targets": {
+    "scheduler-59144": {
+      "hosting": {
+        "scheduler": [
+          "scheduler-59144"
+        ]
+      }
+    }
+  }
+}
