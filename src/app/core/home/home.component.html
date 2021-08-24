@@ -1,0 +1,90 @@
+<div class="container mt-3 mb-4">
+  <ng-container *ngIf="timeTable">
+    <div class="text-muted schedule-header mb-1">
+      <div>
+        <h3 class="m-0">Today Schedule</h3>
+        <p class="mb-1" *ngIf="timeTable.classStatus">
+          <small>Day order {{ timeTable.classStatus.dayOrder }}</small>
+        </p>
+      </div>
+      <date></date>
+    </div>
+    <ng-container
+      *ngIf="timeTable.classStatus.isClassActive; else noClassesAvailabeToday"
+    >
+      <div class="currentClass">
+        <p>
+          <small>Current Class ({{ timeTable.currentSession ? 1 : 0 }})</small>
+        </p>
+        <ng-container *ngIf="timeTable.currentSession; else noCurrentSession">
+          <div class="card-wrapper">
+            <class-card
+              [session]="timeTable.currentSession"
+              [action]="true"
+              [active]="true"
+            ></class-card>
+          </div>
+        </ng-container>
+        <ng-template #noCurrentSession>
+          <div class="alert alert-success">No active classes.</div>
+        </ng-template>
+      </div>
+      <div class="upComingClass mt-3">
+        <p>
+          <small
+            >Upcoming Classes ({{ timeTable.upComingSessions.length }})</small
+          >
+        </p>
+
+        <ng-container
+          *ngIf="timeTable.upComingSessions.length; else noUpcomingClasses"
+        >
+          <div class="card-wrapper">
+            <class-card
+              *ngFor="let session of timeTable.upComingSessions"
+              [session]="session"
+            >
+            </class-card>
+          </div>
+        </ng-container>
+        <ng-template #noUpcomingClasses>
+          <div class="alert alert-success">No Upcoming classes</div>
+        </ng-template>
+      </div>
+
+      <div class="finishedClass mt-3">
+        <p>
+          <small
+            >Finished Classes ({{ timeTable.finishedSessions.length }})</small
+          >
+        </p>
+        <ng-container
+          *ngIf="timeTable.finishedSessions.length; else noFinishedClasses"
+        >
+          <div class="card-wrapper">
+            <class-card
+              *ngFor="let session of timeTable.finishedSessions"
+              [session]="session"
+              [is-inactive]="true"
+            >
+            </class-card>
+          </div>
+        </ng-container>
+
+        <ng-template #noFinishedClasses>
+          <div class="alert alert-success">No classes yet finished</div>
+        </ng-template>
+      </div>
+    </ng-container>
+
+    <ng-template #noClassesAvailabeToday>
+      <div class="alert alert-success mt-3">
+        No classes available for today.
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="loading">
+    <loader></loader>
+  </ng-container>
+</div>

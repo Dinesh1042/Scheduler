@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">
+      <img
+        src="../../assets/school_black_24dp.svg"
+        width="33"
+        alt="one place for everything you schedule"
+      />
+      <span class="fw-500">Scheduler</span>
+    </a>
+
+    <div id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-lg-0">
+        <!-- Nav -->
+        <li
+          *ngIf="user$ | async as user; else anonymousUser"
+          class="nav-item dropdown"
+          ngbDropdown
+        >
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            ngbDropdownToggle
+            aria-expanded="false"
+          >
+            {{ user.userName }}
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            ngbDropdownMenu
+            aria-labelledby="navbarDropdown"
+          >
+            <li>
+              <a
+                routerLink="/timetable"
+                routerLinkActive="active"
+                class="dropdown-item"
+                >Timetable</a
+              >
+            </li>
+            <ng-container *ngIf="user.isAdmin">
+              <li>
+                <a
+                  routerLink="/admin/timetable"
+                  class="dropdown-item"
+                  routerLinkActive="active"
+                  >Manage Timetable</a
+                >
+              </li>
+            </ng-container>
+            <li>
+              <a (click)="logout()" class="dropdown-item">Logout</a>
+            </li>
+          </ul>
+        </li>
+
+        <ng-template #anonymousUser>
+          <li class="nav-item ms-3">
+            <a class="btn btn-success" routerLink="/login">Login</a>
+          </li>
+        </ng-template>
+      </ul>
+    </div>
+  </div>
+</nav>

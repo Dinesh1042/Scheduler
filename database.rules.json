@@ -1,0 +1,13 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    "timetable": {
+      ".read": true,
+      ".indexOn": "order"
+    },
+    "classStatus": {
+      ".read": true
+    }
+  }
+}

@@ -1,0 +1,14 @@
+<ng-container *ngIf="time$ | async as time; else errorTime">
+  <p class="m-0">
+    <span>{{ time | date: "shortTime" }}</span>
+    <span> • </span>
+    <span
+      >{{ time | date: "EEE" }}, {{ time | date: "MMM" }}
+      {{ time | date: "dd" }}</span
+    >
+  </p>
+</ng-container>
+
+<ng-template #errorTime>
+  <p class="m-0">Error on getting time</p>
+</ng-template>

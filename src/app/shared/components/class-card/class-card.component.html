@@ -1,0 +1,22 @@
+<div
+  class="card"
+  [class.in-active]="isInActive"
+  [class.border-success]="active"
+>
+  <div class="card-body">
+    <h5 class="card-title">{{ session.className }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">
+      {{ session.instructor | titlecase }}
+    </h6>
+    <div class="text-mb-2">
+      <session-time
+        [sessionStartsAt]="session.sessionStartsAt"
+        [sessionEndsAt]="session.sessionEndsAt"
+      ></session-time>
+      <p class="text-muted mb-0">{{ session.duration }} Duration</p>
+    </div>
+    <a *ngIf="action" [href]="session.classLink" class="btn btn-success mt-3">
+      Join Class
+    </a>
+  </div>
+</div>

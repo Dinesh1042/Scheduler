@@ -1,0 +1,30 @@
+.navbar {
+  border-bottom: 1px solid #dadce0;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  span {
+    color: #476282;
+  }
+}
+
+.navbar-collapse {
+  flex-grow: unset;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  z-index: 1300;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}

@@ -1,0 +1,221 @@
+<div class="mt-3 mb-4">
+  <header
+    class="text-muted d-flex justify-content-between align-items-center mb-4"
+  >
+    <div class="title">
+      <h3 class="mb-0">{{ dayOrderId ? "Update" : "New" }} Class</h3>
+    </div>
+
+    <button
+      [disabled]="sessions.controls.length >= 5"
+      class="btn btn-success"
+      (click)="addSession()"
+      type="button"
+    >
+      Add Session
+    </button>
+  </header>
+
+  <div class="form-wrap">
+    <div class="col1 d-block">
+      <div class="col-wrap sticky-top">
+        <admin-timetable-preview-card
+          [dayOrderDetail]="timeTableForm.value"
+          [dayOrderId]="dayOrderId"
+          [totalDayOrder]="totalDayOrder"
+        ></admin-timetable-preview-card>
+      </div>
+    </div>
+    <div class="col2">
+      <form
+        class="form"
+        id="form"
+        [formGroup]="timeTableForm"
+        (ngSubmit)="save()"
+      >
+        <ng-container formArrayName="class">
+          <ng-container *ngFor="let s of sessions.controls; index as i">
+            <div
+              class="session-wrapper alert alert-light"
+              [formGroupName]="i"
+              [class.is-invalid]="s.invalid"
+            >
+              <div
+                class="
+                  alert alert-secondary
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                "
+              >
+                <span>Session {{ i + 1 }}</span>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="removeSession(i)"
+                >
+                  Delete
+                </button>
+              </div>
+              <!-- class Name -->
+              <div class="form-group mb-3">
+                <label [for]="'className' + i" class="form-label"
+                  >Class Name</label
+                >
+                <input
+                  formControlName="className"
+                  type="text"
+                  [id]="'className' + i"
+                  class="form-control"
+                  [class.is-invalid]="
+                    s.get('className')?.invalid && s.get('className')?.touched
+                  "
+                  maxlength="50"
+                />
+                <div class="invalid-feedback">Classname is required.</div>
+              </div>
+              <!-- Class Id -->
+              <div class="form-group mb-3">
+                <label [for]="'classId' + i" class="form-label">Class Id</label>
+                <input
+                  formControlName="classId"
+                  type="text"
+                  [id]="'classId' + i"
+                  class="form-control"
+                  [class.is-invalid]="
+                    s.get('classId')?.invalid && s.get('classId')?.touched
+                  "
+                  maxlength="12"
+                />
+                <div class="invalid-feedback">
+                  <div *ngIf="s.get('classId')?.hasError('required')">
+                    Class Id is required.
+                  </div>
+                  <div
+                    *ngIf="
+                      !s.get('classId')?.hasError('required') &&
+                      s.get('classId')?.hasError('validClassId')
+                    "
+                  >
+                    Please enter a valid Class Id.
+                  </div>
+                </div>
+              </div>
+              <!-- Instructor -->
+              <div class="form-group mb-3">
+                <label [for]="'instructor' + i" class="form-label"
+                  >Instructor</label
+                >
+                <input
+                  formControlName="instructor"
+                  type="text"
+                  class="form-control"
+                  [id]="'instructor' + i"
+                  [class.is-invalid]="
+                    s.get('instructor')?.invalid && s.get('instructor')?.touched
+                  "
+                  maxlength="50"
+                />
+                <div class="invalid-feedback">Instructor is required.</div>
+              </div>
+              <!-- Short class Name -->
+              <div class="form-group mb-3">
+                <label [for]="'shortClassName' + i" class="form-label"
+                  >Short Class Name</label
+                >
+                <input
+                  formControlName="shortClassName"
+                  type="text"
+                  class="form-control"
+                  [id]="'shortClassName' + i"
+                  maxlength="5"
+                  [class.is-invalid]="
+                    s.get('shortClassName')?.invalid &&
+                    s.get('shortClassName')?.touched
+                  "
+                />
+                <div class="invalid-feedback">
+                  <div *ngIf="s.get('shortClassName')?.hasError('required')">
+                    Short class name is required.
+                  </div>
+                  <div *ngIf="s.get('shortClassName')?.hasError('maxlength')">
+                    Short class name must be maximum
+                    {{
+                      s.get("shortClassName")?.errors?.maxlength.requiredLength
+                    }}
+                    character length.
+                  </div>
+                </div>
+              </div>
+              <div class="row" formGroupName="timing">
+                <div class="col">
+                  <div class="form-group mb-3">
+                    <label [for]="'startsAt' + i" class="form-label"
+                      >Starts At</label
+                    >
+                    <input
+                      formControlName="startsAt"
+                      type="time"
+                      class="form-control"
+                      [id]="'startsAt' + i"
+                      [class.is-invalid]="
+                        s.get('timing')?.get('startsAt')?.invalid &&
+                        s.get('timing')?.get('startsAt')?.touched
+                      "
+                    />
+                    <div class="invalid-feedback">Start Time is required.</div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group mb-3">
+                    <label [for]="'endsAt' + i" class="form-label"
+                      >Ends At</label
+                    >
+                    <input
+                      formControlName="endsAt"
+                      type="time"
+                      class="form-control"
+                      [id]="'endsAt' + i"
+                      [class.is-invalid]="
+                        (s.get('timing')?.get('endsAt')?.invalid ||
+                          s.get('timing')?.hasError('sessionTime')) &&
+                        s.get('timing')?.get('endsAt')?.dirty
+                      "
+                    />
+                    <div class="invalid-feedback">
+                      <div
+                        *ngIf="
+                          s.get('timing')?.get('endsAt')?.hasError('required')
+                        "
+                      >
+                        Endtime is required.
+                      </div>
+                      <div *ngIf="s.get('timing')?.hasError('sessionTime')">
+                        End time must be greater than start time.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <button
+          *ngIf="sessions.controls.length && dayOrderId"
+          class="btn btn-danger"
+          (click)="delete()"
+          type="button"
+        >
+          Delete
+        </button>
+        <button
+          [disabled]="timeTableForm.invalid"
+          *ngIf="sessions.controls.length"
+          class="btn btn-success ms-3"
+        >
+          {{ dayOrderId ? "Update" : "Save" }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

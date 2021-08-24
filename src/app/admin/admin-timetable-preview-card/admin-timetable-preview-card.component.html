@@ -1,0 +1,48 @@
+<div class="card" *ngIf="detail && detail.class.length">
+  <div class="card-body">
+    <header
+      class="
+        d-flex
+        align-items-baseline
+        justify-content-between
+        card-header
+        text-muted
+      "
+    >
+      <div>
+        <h5 class="card-title mb-0">Class overview</h5>
+        <span>Total Sessions {{ detail.class.length }}</span>
+      </div>
+      <div class="dayOrder">
+        <h5 class="m-0">
+          Day Order
+          {{ dayOrderId ? dayOrderId : totalDayOrder ? totalDayOrder : 1 }}
+        </h5>
+      </div>
+    </header>
+    <ul class="list-group list-group-flush">
+      <ng-container *ngFor="let class of detail.class">
+        <li *ngIf="class.className" class="list-group-item">
+          <h6 class="card-title mb-1 mt-1">
+            {{ class.className }}
+            <ng-container *ngIf="class.shortClassName">
+              • ({{ class.shortClassName }})</ng-container
+            >
+          </h6>
+          <p class="text-muted mb-1">{{ class.instructor }}</p>
+          <ng-container *ngIf="class.sessionStartsAt">
+            <session-time
+              [sessionStartsAt]="class.sessionStartsAt"
+              [sessionEndsAt]="class.sessionEndsAt"
+            ></session-time>
+          </ng-container>
+          <p class="mt-1">
+            <a [href]="'https://meet.google.com/' + class.classId">
+              https://meet.google.com/ {{ class.classId }}
+            </a>
+          </p>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>

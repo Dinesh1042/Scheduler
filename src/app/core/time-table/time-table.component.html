@@ -1,0 +1,39 @@
+<div class="mt-4 mb-4">
+  <ng-container *ngIf="timeTable$ | async as timeTable; else loader">
+    <header class="text-muted">
+      <h3 class="mb-0">Timetable</h3>
+      <p>
+        <small>Day Order {{ timeTable.classStatus.dayOrder }} </small>
+      </p>
+    </header>
+    <table class="table table-bordered table-striped mt-4 table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>I</th>
+          <th>II</th>
+          <th>III</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let classes of timeTable.classes; index as i"
+          [class.table-success]="
+            i + 1 === timeTable.classStatus.dayOrder &&
+            timeTable.classStatus.isClassActive
+          "
+          (click)="detailView(classes.order)"
+        >
+          <td>{{ i + 1 }}</td>
+
+          <td *ngFor="let class of classes.class">
+            {{ class.shortClassName }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+  <ng-template #loader>
+    <loader></loader>
+  </ng-template>
+</div>
